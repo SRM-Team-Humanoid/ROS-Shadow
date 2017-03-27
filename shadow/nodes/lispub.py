@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy 
 import roslib
-roslib.load_manifest('learning_tf')
+roslib.load_manifest('shadow')
 import math
 import tf
 import geometry_msgs.msg
@@ -17,8 +17,9 @@ def vision_proc(listener):
         (rh,_) = listener.lookupTransform('/right_hand', '/openni_depth_frame', rospy.Time(0))
         (lsh,_) = listener.lookupTransform('/left_shoulder', '/openni_depth_frame', rospy.Time(0))
         (le,_) = listener.lookupTransform('/left_elbow', '/openni_depth_frame', rospy.Time(0))
-        (lh,_) = listener.lookupTransform('/left_hand', '/openni_depth_frame', rospy.Time(0)) 
-        msg = map(str,list(lsh+le+lh+rsh+re+rh))  
+        (lh,_) = listener.lookupTransform('/left_hand', '/openni_depth_frame', rospy.Time(0))
+	(ne,_) = listener.lookupTransform('/neck', '/openni_depth_frame', rospy.Time(0))
+        msg = map(str,list(ne+lsh+le+lh+rsh+re+rh))
     except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
         msg = ['n']
 
