@@ -1,9 +1,11 @@
 <launch>
 	<include file="$(find skeleton_markers)/launch/skeleton.launch"/>
-	
-	<node pkg="shadow" name="Skeleton_Angles" type="shadow_whisperer.py"/>
 
-	<node pkg="shadow" name="Shadow_Bot" type="rMinus2Shadow.py"/>
+	<include file="$(find skeleton_markers)/launch/markers_from_tf.launch"/>
+	
+	<node pkg="shadow" name="xyz_dega" type="lispub.py"/>
+
+	<node pkg="shadow" name="xyz_lega" type="sub.py" launch-prefix="sudo"/>
 	
 	
 </launch>

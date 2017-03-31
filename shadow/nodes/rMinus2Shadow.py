@@ -286,21 +286,50 @@ def getAngles(data):
         # angles.execute()
 
 
+prev_step = "None"
+def shadow(data):
+    global prev_step
+    angles = data.data
+    angles = " ".join(angles.split()[:-3])
+    angles = Motion(10,angles,0)
+    conversion = {1:'i',2:'i',3:'i'}
+    angles = MotionSet([angles],speed=1,offsets=[conversion])
+    rka,lka,wa = map(float,data.data.split()[-3:])
+
+    if wa < -45:
+        print 'Left Turn'
+        prev_step = "None"
+        l_turn.execute()
+    elif wa > 45:
+        print 'Right Turn'
+        prev_step = "None"
+        r_turn.execute()
+    elif rka > 25 and prev_step!='r_step':
+        print 'Right Step'
+        prev_step = "r_step"
+        r_step.execute()
+    elif lka > 25 and prev_step!='l_step':
+        print 'Left Step'
+        prev_step = "l_step"
+        l_step.execute()
+    else:
+        print "."
+        angles.execute()
 
 
 
 if __name__=='__main__':
-    # dxl = Dxl(lock=20,debug=True)
-    # state = dxl.getPos()
-    # print state
-    # raw_input("Proceed?")
-    # balance.execute()
-    # raw_input("Sure?")
+    dxl = Dxl(lock=20,debug=True)
+    state = dxl.getPos()
+    print state
+    raw_input("Proceed?")
+    balance.execute()
+    raw_input("Sure?")
 
 
 
     rospy.init_node('shadow_bot', anonymous=True)
-    rospy.Subscriber('skel_angles',String,getAngles,queue_size=1)
+    rospy.Subscriber('skel_angles',String,shadow,queue_size=1)
     rospy.spin()
 
     

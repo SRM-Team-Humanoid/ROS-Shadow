@@ -17,13 +17,10 @@ class SkellAngler(object):
 
         self.HALF_PI = pi / 2.0
 
-        self.pub = rospy.Publisher('skel_angles', String, queue_size=1)
-        self.rate = rospy.Rate(10)
-        self.msg = "n"
-        self.prev_msg = "n"
-        self.leg_buffer = False
         rospy.Subscriber('skeleton', Skeleton, self.handler)
-
+        self.pub = rospy.Publisher('skel_angles',String,queue_size=1)
+        self.rate = rospy.Rate(10)
+        self.msg= "n"
 
         self.skeleton = dict()
         self.skeleton['confidence'] = dict()
@@ -32,15 +29,9 @@ class SkellAngler(object):
 
         while not rospy.is_shutdown():
             if self.msg != 'n':
-                if self.leg_buffer = True:
-                    self.pub.publish(self.prev_msg)
-                    self.leg_buffer = False
-                    self.rate.sleep()
-                else:
-                    self.pub.publish(self.msg)
-                    self.rate.sleep()
+                self.pub.publish(self.msg)
 
-        rospy.spin()
+            self.rate.sleep()
 
 
 
@@ -97,12 +88,12 @@ class SkellAngler(object):
         waist.Normalize()
         waist_angle = math.degrees((asin(waist.z())))
 
-        print "Waist",
-        print waist_angle
-        print "Right Knee",
-        print right_knee_angle
-        print "Left Knee",
-        print left_knee_angle
+
+        # print waist_angle
+        # print "Right Knee",
+        # print right_knee_angle
+        # print "Left Knee",
+        # print left_knee_angle
         # print "Right Lift ",
         # print right_arm_shoulder_lift_angle
         # print "Right Pan ",
@@ -117,37 +108,11 @@ class SkellAngler(object):
         # print "Left Elbow ",
         # print left_arm_elbow_flex_angle
 
-        msg = "shad " + " ".join(map(str, [right_arm_shoulder_lift_angle, left_arm_shoulder_lift_angle, right_arm_shoulder_pan_angle,
-                                      left_arm_shoulder_pan_angle,right_arm_elbow_flex_angle,left_arm_elbow_flex_angle]))
 
+        self.msg = " ".join(map(str, [right_arm_shoulder_lift_angle, left_arm_shoulder_lift_angle, right_arm_shoulder_pan_angle,
+                                      left_arm_shoulder_pan_angle,right_arm_elbow_flex_angle,left_arm_elbow_flex_angle,right_knee_angle,
+                                      left_knee_angle,waist_angle]))
 
-        print self.prev_msg
-
-        if waist_angle < -45:
-            self.msg = "left_turn"
-            self.prev_msg = ""
-            # self.pub.publish(self.msg)
-            # #self.rate.sleep()
-        elif waist_angle > 45:
-            self.msg = "right_turn"
-            self.prev_msg = ""
-            # self.pub.publish(self.msg)
-            # #self.rate.sleep()
-        elif left_knee_angle>25 and self.prev_msg != 'left_step':
-            self.msg = "left_step"
-            self.prev_msg = "left_step"
-            # self.pub.publish(self.msg)
-            # #self.rate.sleep()
-        elif right_knee_angle>25 and self.prev_msg != 'right_step':
-            self.msg = "right_step"
-            self.prev_msg = "right_step"
-            # self.pub.publish(self.msg)
-            # #self.rate.sleep()
-        else:
-            self.msg = msg
-            # self.pub.publish(self.msg)
-            # #self.rate.sleep()
-        # print self.msg
 
 
 
