@@ -84,7 +84,7 @@ class XmlTree(object):
             raise RuntimeError("ParseFail!")
         motionsets = []
         for step in steps:
-            motionsets.append(MotionSet(self.parsexml(step.attrib['main']),speed=float(step.attrib['mainSpeed']),exclude=exclude,offsets=[]))
+            motionsets.append(MotionSet(self.parsexml(step.attrib['main']),speed=float(step.attrib['mainSpeed']),exclude=exclude,offsets=offsets))
 
         return motionsets
 
