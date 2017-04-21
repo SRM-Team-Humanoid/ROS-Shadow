@@ -84,7 +84,7 @@ class XmlTree(object):
             raise RuntimeError("ParseFail!")
         motionsets = []
         for step in steps:
-            motionsets.append(MotionSet(self.parsexml(step.attrib['main']),speed=float(step.attrib['mainSpeed']),exclude=exclude,offsets=offsets))
+            motionsets.append(MotionSet(self.parsexml(step.attrib['main']),speed=float(step.attrib['mainSpeed']),exclude=exclude,offsets=[]))
 
         return motionsets
 
@@ -259,33 +259,6 @@ walk_motion = Action([w3,w4,w5,w6])
 #
 #
 
-def getAngles(data):
-    global prev_step
-    angles = data.data
-    switch = angles.split()[0]
-    if switch == 'left_turn':
-        print 'l_turn'
-        # l_turn.execute()
-    elif switch == 'right_turn':
-        print 'r_turn'
-        # r_turn.execute()
-    elif switch == 'left_step':
-        print 'l_step'
-        # l_step.execute()
-    elif switch =='right_step':
-        print 'r_step'
-        # r_step.execute()
-    elif switch=='shad':
-        print "S"
-        # print "Do Shadow"
-        # angles = " ".join(angles.split()[1:])
-        # angles = Motion(10,angles,0)
-        # print angles.pose
-        # conversion = {1:'i',2:'i',3:'i'}
-        # angles = MotionSet([angles],speed=1,offsets=[conversion])
-        # angles.execute()
-
-
 prev_step = "None"
 def shadow(data):
     global prev_step
@@ -294,7 +267,7 @@ def shadow(data):
     angles = Motion(10,angles,0)
     conversion = {1:'i',2:'i',3:'i'}
     angles = MotionSet([angles],speed=1,offsets=[conversion])
-    rka,lka,wa = map(float,data.data.split()[-3:])
+    rta,lta,wa = map(float,data.data.split()[-3:])
 
     if wa < -45:
         print 'Left Turn'
@@ -304,11 +277,11 @@ def shadow(data):
         print 'Right Turn'
         prev_step = "None"
         r_turn.execute()
-    elif rka > 25 and prev_step!='r_step':
+    elif rta > 25 and prev_step!='r_step':
         print 'Right Step'
         prev_step = "r_step"
         r_step.execute()
-    elif lka > 25 and prev_step!='l_step':
+    elif lta > 25 and prev_step!='l_step':
         print 'Left Step'
         prev_step = "l_step"
         l_step.execute()

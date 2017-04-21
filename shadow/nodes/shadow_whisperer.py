@@ -77,12 +77,12 @@ class SkellAngler(object):
 
         right_femur = self.skeleton['position']['right_knee'] - self.skeleton['position']['right_hip']
         right_femur.Normalize()
-        right_knee_angle = math.degrees((asin(right_femur.y()) + self.HALF_PI))
+        right_thigh_angle = math.degrees((asin(right_femur.y()) + self.HALF_PI))
 
 
         left_femur = self.skeleton['position']['left_knee'] - self.skeleton['position']['left_hip']
         left_femur.Normalize()
-        left_knee_angle = math.degrees((asin(left_femur.y()) + self.HALF_PI))
+        left_thigh_angle = math.degrees((asin(left_femur.y()) + self.HALF_PI))
 
         waist = self.skeleton['position']['right_hip'] - self.skeleton['position']['left_hip']
         waist.Normalize()
@@ -91,9 +91,9 @@ class SkellAngler(object):
 
         # print waist_angle
         # print "Right Knee",
-        # print right_knee_angle
+        # print right_thigh_angle
         # print "Left Knee",
-        # print left_knee_angle
+        # print left_thigh_angle
         # print "Right Lift ",
         # print right_arm_shoulder_lift_angle
         # print "Right Pan ",
@@ -110,8 +110,8 @@ class SkellAngler(object):
 
 
         self.msg = " ".join(map(str, [right_arm_shoulder_lift_angle, left_arm_shoulder_lift_angle, right_arm_shoulder_pan_angle,
-                                      left_arm_shoulder_pan_angle,right_arm_elbow_flex_angle,left_arm_elbow_flex_angle,right_knee_angle,
-                                      left_knee_angle,waist_angle]))
+                                      left_arm_shoulder_pan_angle,right_arm_elbow_flex_angle,left_arm_elbow_flex_angle,right_thigh_angle,
+                                      left_thigh_angle,waist_angle]))
 
 
 
